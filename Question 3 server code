@@ -1,0 +1,33 @@
+import random
+import socket
+import threading
+
+quotes = ["Quote 1", "Quote 2", "Quote 3", "Quote 4", "Quote 5"]
+
+def get_quote():
+    return random.choice(quotes)
+
+def handle_client(client):
+    quote = get_quote()
+    client.send(quote.encode())
+    client.close()
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(("0.0.0.0", 8888))
+server.listen()
+
+while True:
+    client, address = server.accept()
+    client_handler = threading.Thread(target=handle_client, args=(client,))
+    client_handler.start()
+
+
+
+
+
+
+
+
+
+
+
